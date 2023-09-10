@@ -1,7 +1,7 @@
 Create database ExchanceDB;
 use ExchanceDB;
 
-CREATE TABLE Localidade (
+CREATE TABLE localidade (
   id_localidade INT auto_increment NOT NULL,
   pais VARCHAR(45) NOT NULL,
   cidade VARCHAR(45) NOT NULL,
@@ -9,8 +9,7 @@ CREATE TABLE Localidade (
   cep VARCHAR(45) NOT NULL,
   PRIMARY KEY (id_localidade));
 
-
-CREATE TABLE  Estudante (
+CREATE TABLE  estudante (
    id_estudante INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    idade INT NOT NULL,
@@ -22,9 +21,9 @@ CREATE TABLE  Estudante (
    fk_localidade  INT NOT NULL,
   PRIMARY KEY (id_estudante),
     FOREIGN KEY (fk_localidade)
-    REFERENCES Localidade (id_localidade));
+    REFERENCES localidade (id_localidade));
   
-CREATE TABLE  Host_family (
+CREATE TABLE host_family (
    id_host_family INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    Verificado CHAR(25) NOT NULL,
@@ -34,10 +33,10 @@ CREATE TABLE  Host_family (
    fk_localidade INT NOT NULL,
   PRIMARY KEY (id_host_family),
     FOREIGN KEY (fk_localidade)
-    REFERENCES Localidade (id_localidade));
+    REFERENCES localidade (id_localidade));
 
 
-CREATE TABLE Comentario (
+CREATE TABLE comentario (
    id_comentario INT auto_increment NOT NULL,
    fk_proprietario INT NOT NULL,
    fk_destinatario INT NOT NULL,
@@ -45,11 +44,11 @@ CREATE TABLE Comentario (
    data_postagem DATE NOT NULL,
   PRIMARY KEY (id_comentario, fk_proprietario, fk_destinatario),
     FOREIGN KEY (fk_proprietario)
-    REFERENCES Estudante (id_estudante),
+    REFERENCES estudante (id_estudante),
     FOREIGN KEY (fk_destinatario)
-    REFERENCES Host_family (id_host_family));
+    REFERENCES host_family (id_host_family));
 
-CREATE TABLE Mensagem (
+CREATE TABLE mensagem (
    id_mensagem INT auto_increment NOT NULL,
    fk_proprietario INT NOT NULL,
    fk_destinatario INT NOT NULL,
@@ -57,12 +56,12 @@ CREATE TABLE Mensagem (
    data_mensagem DATETIME NOT NULL,
    PRIMARY KEY (id_mensagem, fk_proprietario, fk_destinatario),
     FOREIGN KEY (fk_proprietario)
-    REFERENCES Estudante (id_estudante),
+    REFERENCES estudante (id_estudante),
     FOREIGN KEY (fk_destinatario)
-    REFERENCES Host_family (id_host_family));
+    REFERENCES host_family (id_host_family));
     
 
-CREATE TABLE Acomodacao (
+CREATE TABLE acomodacao (
    id_acomodacao INT auto_increment NOT NULL,
    fk_host INT NOT NULL,
    descricao VARCHAR(300) NOT NULL,
@@ -72,10 +71,10 @@ CREATE TABLE Acomodacao (
    regras VARCHAR(150) NOT NULL,
   PRIMARY KEY (id_acomodacao, fk_host),
     FOREIGN KEY (fk_host)
-	REFERENCES Host_family (id_host_family));
+	REFERENCES host_family (id_host_family));
 
 
-CREATE TABLE Reserva (
+CREATE TABLE reserva (
    id_reserva INT auto_increment NOT NULL,
    fk_estudante INT NOT NULL,
    entrada DATE NOT NULL,
@@ -85,13 +84,13 @@ CREATE TABLE Reserva (
    fk_host INT NOT NULL,
   PRIMARY KEY (id_reserva, fk_estudante, fk_acomodacao, fk_host),
     FOREIGN KEY (fk_estudante)
-    REFERENCES Estudante (id_estudante),
+    REFERENCES estudante (id_estudante),
     FOREIGN KEY (fk_acomodacao, fk_host)
-    REFERENCES Acomodacao (id_acomodacao , fk_host));
+    REFERENCES acomodacao (id_acomodacao , fk_host));
     
 
     
-CREATE TABLE Integrante (
+CREATE TABLE integrante (
    id_integrante INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    parentesco VARCHAR(20) NOT NULL,
@@ -99,9 +98,9 @@ CREATE TABLE Integrante (
    fk_host INT NOT NULL,
   PRIMARY KEY (id_integrante, fk_host),
     FOREIGN KEY (fk_host)
-    REFERENCES Host_family (id_host_family));
+    REFERENCES host_family (id_host_family));
     
-CREATE TABLE Imagem (
+CREATE TABLE imagem (
    id_imagem INT auto_increment NOT NULL,
    nome VARCHAR(50) NOT NULL,
    caminho BLOB NOT NULL,
@@ -111,6 +110,6 @@ CREATE TABLE Imagem (
    fk_host INT,
   PRIMARY KEY (id_imagem, fk_estudante, fk_host),
     FOREIGN KEY (fk_estudante)
-    REFERENCES Estudante (id_estudante),
+    REFERENCES estudante (id_estudante),
     FOREIGN KEY (fk_host)
-   REFERENCES Host_family (id_host_family));
+   REFERENCES host_family (id_host_family));
