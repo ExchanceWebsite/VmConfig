@@ -1,7 +1,7 @@
 Create database ExchanceDB;
 use ExchanceDB;
 
-CREATE TABLE localidade (
+CREATE TABLE Localidade (
   id_localidade INT auto_increment NOT NULL,
   pais VARCHAR(45) NOT NULL,
   cidade VARCHAR(45) NOT NULL,
@@ -9,7 +9,8 @@ CREATE TABLE localidade (
   cep VARCHAR(45) NOT NULL,
   PRIMARY KEY (id_localidade));
 
-CREATE TABLE  estudante (
+
+CREATE TABLE  Estudante (
    id_estudante INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    idade INT NOT NULL,
@@ -21,9 +22,9 @@ CREATE TABLE  estudante (
    fk_localidade  INT NOT NULL,
   PRIMARY KEY (id_estudante),
     FOREIGN KEY (fk_localidade)
-    REFERENCES localidade (id_localidade));
+    REFERENCES Localidade (id_localidade));
   
-CREATE TABLE host_family (
+CREATE TABLE  Host_family (
    id_host_family INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    Verificado CHAR(25) NOT NULL,
@@ -33,10 +34,10 @@ CREATE TABLE host_family (
    fk_localidade INT NOT NULL,
   PRIMARY KEY (id_host_family),
     FOREIGN KEY (fk_localidade)
-    REFERENCES localidade (id_localidade));
+    REFERENCES Localidade (id_localidade));
 
 
-CREATE TABLE comentario (
+CREATE TABLE Comentario (
    id_comentario INT auto_increment NOT NULL,
    fk_proprietario INT NOT NULL,
    fk_destinatario INT NOT NULL,
@@ -44,37 +45,29 @@ CREATE TABLE comentario (
    data_postagem DATE NOT NULL,
   PRIMARY KEY (id_comentario, fk_proprietario, fk_destinatario),
     FOREIGN KEY (fk_proprietario)
-    REFERENCES estudante (id_estudante),
+    REFERENCES Estudante (id_estudante),
     FOREIGN KEY (fk_destinatario)
-    REFERENCES host_family (id_host_family));
+    REFERENCES Host_family (id_host_family));
 
-CREATE TABLE mensagem (
-   id_mensagem INT auto_increment NOT NULL,
-   fk_proprietario INT NOT NULL,
-   fk_destinatario INT NOT NULL,
-   Texto VARCHAR(300) NOT NULL,
-   data_mensagem DATETIME NOT NULL,
-   PRIMARY KEY (id_mensagem, fk_proprietario, fk_destinatario),
-    FOREIGN KEY (fk_proprietario)
-    REFERENCES estudante (id_estudante),
-    FOREIGN KEY (fk_destinatario)
-    REFERENCES host_family (id_host_family));
-    
 
-CREATE TABLE acomodacao (
+CREATE TABLE Acomodacao (
    id_acomodacao INT auto_increment NOT NULL,
    fk_host INT NOT NULL,
+   fk_localidade INT NOT NULL,
+   reservado BOOLEAN NOT NULL,
    descricao VARCHAR(300) NOT NULL,
    inicio_disponibilidade DATE NOT NULL,
    fim_disponibilidade DATE NOT NULL,
    valor_diaria FLOAT NOT NULL,
    regras VARCHAR(150) NOT NULL,
   PRIMARY KEY (id_acomodacao, fk_host),
+	FOREIGN KEY (fk_localidade)
+    REFERENCES Localidade (id_localidade),
     FOREIGN KEY (fk_host)
-	REFERENCES host_family (id_host_family));
+	REFERENCES Host_family (id_host_family));
+    
 
-
-CREATE TABLE reserva (
+CREATE TABLE Reserva (
    id_reserva INT auto_increment NOT NULL,
    fk_estudante INT NOT NULL,
    entrada DATE NOT NULL,
@@ -84,13 +77,12 @@ CREATE TABLE reserva (
    fk_host INT NOT NULL,
   PRIMARY KEY (id_reserva, fk_estudante, fk_acomodacao, fk_host),
     FOREIGN KEY (fk_estudante)
-    REFERENCES estudante (id_estudante),
+    REFERENCES Estudante (id_estudante),
     FOREIGN KEY (fk_acomodacao, fk_host)
-    REFERENCES acomodacao (id_acomodacao , fk_host));
+    REFERENCES Acomodacao (id_acomodacao , fk_host));
+      
     
-
-    
-CREATE TABLE integrante (
+CREATE TABLE Integrante (
    id_integrante INT auto_increment NOT NULL,
    nome VARCHAR(30) NOT NULL,
    parentesco VARCHAR(20) NOT NULL,
@@ -98,9 +90,9 @@ CREATE TABLE integrante (
    fk_host INT NOT NULL,
   PRIMARY KEY (id_integrante, fk_host),
     FOREIGN KEY (fk_host)
-    REFERENCES host_family (id_host_family));
+    REFERENCES Host_family (id_host_family));
     
-CREATE TABLE imagem (
+CREATE TABLE Imagem (
    id_imagem INT auto_increment NOT NULL,
    nome VARCHAR(50) NOT NULL,
    caminho BLOB NOT NULL,
@@ -110,6 +102,6 @@ CREATE TABLE imagem (
    fk_host INT,
   PRIMARY KEY (id_imagem, fk_estudante, fk_host),
     FOREIGN KEY (fk_estudante)
-    REFERENCES estudante (id_estudante),
+    REFERENCES Estudante (id_estudante),
     FOREIGN KEY (fk_host)
-   REFERENCES host_family (id_host_family));
+   REFERENCES Host_family (id_host_family));
